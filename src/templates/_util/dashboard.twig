@@ -1,0 +1,26 @@
+{#{% set components = craft.app.components %}#}
+{% set components = craft.mqueues.queues %}
+
+{% for component in components %}
+    Channel: {{ component.channel }}<br/>
+    Total Jobs: {{ component.getTotalJobs() }}<br/>
+    Total Waiting: {{ component.getTotalWaiting() }}<br/>
+    Total Reserved: {{ component.getTotalReserved() }}<br/>
+    Total Failed: {{ component.getTotalFailed() }}<br/>
+    Total Delayed: {{ component.getTotalDelayed() }}<br/>
+    <table class="table">
+        <tr><th>ID</th><th>Delay</th><th>Status</th><th>Progress</th><th>Label</th><th>Description</th><th>Error</th></tr>
+    {% for job in component.getJobInfo() %}
+        <tr>
+            <td>{{ job.id }}</td>
+            <td>{{ job.delay }}</td>
+            <td>{{ job.status }}</td>
+            <td>{{ job.progress }}</td>
+            <td>{{ job.progressLabel }}</td>
+            <td>{{ job.description }}</td>
+            <td>{{ job.error }}</td>
+        </tr>
+    {% endfor %}
+    </table>
+    <hr/>
+{% endfor %}
