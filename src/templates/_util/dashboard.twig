@@ -1,26 +1,18 @@
-{#{% set components = craft.app.components %}#}
 {% set components = craft.mqueues.queues %}
 
 {% for component in components %}
-    Channel: {{ component.channel }}<br/>
-    Total Jobs: {{ component.getTotalJobs() }}<br/>
-    Total Waiting: {{ component.getTotalWaiting() }}<br/>
-    Total Reserved: {{ component.getTotalReserved() }}<br/>
-    Total Failed: {{ component.getTotalFailed() }}<br/>
-    Total Delayed: {{ component.getTotalDelayed() }}<br/>
-    <table class="table">
-        <tr><th>ID</th><th>Delay</th><th>Status</th><th>Progress</th><th>Label</th><th>Description</th><th>Error</th></tr>
-    {% for job in component.getJobInfo() %}
+    <h1>Queue {{ component.channel }}</h1>
+    <table style="width: 100%">
+        <tr><th>Description</th><th>Status</th><th>Progress</th><th>&nbsp;</th></tr>
+    {% for job in component.getJobInfo()|slice(0, 10) %}
         <tr>
-            <td>{{ job.id }}</td>
-            <td>{{ job.delay }}</td>
-            <td>{{ job.status }}</td>
-            <td>{{ job.progress }}</td>
-            <td>{{ job.progressLabel }}</td>
-            <td>{{ job.description }}</td>
-            <td>{{ job.error }}</td>
+            <td><a href="/actions/multiple-queue/admin/detail/{{ job.id }}">{{ job.description }}</a></td>
+            <td>{{ job.status == 1?'Waiting':(job.status == 2?'Reserved':'Done') }}</td>
+            <td>{{ job.progress }}%</td>
+            <td><a href="/actions/mutiple-queue/admin/release/{{ job.id }}">[X]</a></td>
         </tr>
     {% endfor %}
     </table>
     <hr/>
+    <div style="text-align: center">Total jobs: {{ component.getTotalJobs()}} </div>
 {% endfor %}
