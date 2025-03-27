@@ -3,7 +3,7 @@
 {% for component in components %}
     <h1>Queue {{ component.channel }}</h1>
     <p>Waiting: {{ component.getTotalWaiting() }}</p>
-    <p>Processing: {{ component.getReserved() }}</p>
-    <p>Failed: {{ component.getFailed() }}</p>
+    <p>Processing: {{ component.getTotalReserved() }}</p>
+    <p>Failed: {{ component.getTotalFailed() }}</p>
     <hr/>
 {% endfor %}
