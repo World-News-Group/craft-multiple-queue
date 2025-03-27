@@ -1,0 +1,9 @@
+{% set components = craft.mqueues.queues %}
+
+{% for component in components %}
+    <h1>Queue {{ component.channel }}</h1>
+    <p>Waiting: {{ component.getTotalWaiting() }}</p>
+    <p>Processing: {{ component.getReserved() }}</p>
+    <p>Failed: {{ component.getFailed() }}</p>
+    <hr/>
+{% endfor %}

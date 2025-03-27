@@ -13,6 +13,8 @@ use worlddevs\craftmultiplequeue\utility\MultipleQueueUtility;
 use worlddevs\craftmultiplequeue\services\QueueService;
 use craft\web\twig\variables\CraftVariable;
 use worlddevs\craftmultiplequeue\variables\MultipleQueueVariables;
+use craft\services\Dashboard;
+use worlddevs\craftmultiplequeue\widgets\MultipleQueueWidget;
 
 /**
  * MultipleQueue plugin
@@ -64,6 +66,14 @@ class Plugin extends BasePlugin
             Utilities::EVENT_REGISTER_UTILITY_TYPES,
             function(RegisterComponentTypesEvent $event) {
                 $event->types[] = MultipleQueueUtility::class;
+            }
+        );
+
+        Event::on(
+            Dashboard::class,
+            Dashboard::EVENT_REGISTER_WIDGET_TYPES,
+            function(RegisterComponentTypesEvent $event) {
+                $event->types[] = MultipleQueueWidget::class;
             }
         );
     }
