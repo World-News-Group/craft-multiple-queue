@@ -1,0 +1,13 @@
+{% set jobid = craft.app.request.getParam('id') %}
+
+{% if jobid is empty %}
+    {% redirect('/actions/multiple-queue/admin/') %}
+{% endif %}
+
+{% set job = craft.mqueue.getJob(jobid) %}
+
+{% if job is empty %}
+    {% redirect('/actions/multiple-queue/admin/') %}
+{% endif %}
+
+{{ job }}

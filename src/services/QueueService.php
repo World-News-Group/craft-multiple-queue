@@ -19,4 +19,21 @@ class QueueService extends Component {
 
         return $queues;
     }
+
+    public function getJob($id): ?array {
+        $queues = $this->getQueues();
+
+        foreach($queues as $queue) {
+            try {
+                $job = $queue->getJobDetails($id);
+
+                return $job;
+            }
+            catch(\Exception $e) {
+                // do nothing, next queue
+            }
+        }
+
+        return null;
+    }
 }
