@@ -11,4 +11,8 @@ class MultipleQueueWidget extends \craft\base\Widget {
             'local'=>'variables',
         ]);
     }
+
+    public static function displayName(): string {
+        return "Queue Viewer";
+    }
 }
