@@ -12,7 +12,7 @@ class QueueService extends Component {
         foreach(Craft::$app->components as $component) {
             if( is_array($component) && $component['class'] == 'craft\\queue\\Queue' ) {
                 $queues[] = new \craft\queue\Queue([
-                    'channel'=>empty($component['channel'])?'default':$component['channel']
+                    'channel'=>empty($component['channel'])?'queue':$component['channel']
                 ]);
             }
         }
