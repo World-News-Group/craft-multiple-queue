@@ -7,7 +7,7 @@
     {% for job in component.getJobInfo()|slice(0, 10) %}
         <tr>
             <td><a href="/actions/multiple-queue/admin/detail/{{ job.id }}">{{ job.description }}</a></td>
-            <td>{{ job.status == 1?'Waiting':(job.status == 2?'Reserved':'Done') }}</td>
+            <td>{{ (job.fail == 1)?'Failed':(job.status == 1)?'Waiting':(job.status == 2?'Reserved':'Done') }}</td>
             <td>{{ job.progress }}%</td>
             <td><a href="/actions/mutiple-queue/admin/release/{{ job.id }}">[X]</a></td>
         </tr>
