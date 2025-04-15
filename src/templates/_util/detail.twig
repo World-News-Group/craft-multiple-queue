@@ -4,10 +4,19 @@
     {% redirect('/actions/multiple-queue/admin/') %}
 {% endif %}
 
-{% set job = craft.mqueue.getJob(jobid) %}
+{% set job = craft.mqueues.getJob(jobid) %}
 
 {% if job is empty %}
     {% redirect('/actions/multiple-queue/admin/') %}
 {% endif %}
 
-{{ job }}
+Class: {{ job.class }}<br>
+Delay: {{ job.delay }}<br>
+Status: {{ job.status }}<br>
+Progress: {{ job.progress }}<br>
+Progress Label: {{ job.progressLabel }}<br>
+Description: {{ job.description }}<br>
+Job: {{ job.job }}<br>
+TTR: {{ job.ttr }}<br>
+Priority: {{ job.Priority }}<br>
+{# Pushed at: {{ job.pushedAt }}<br> #}
