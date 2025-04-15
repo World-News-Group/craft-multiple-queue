@@ -20,10 +20,21 @@ class MultipleQueueUtility extends Utility {
     }
 
     public static function contentHtml(): string {
-        return Craft::$app->view->renderTemplate(
-            'multiple-queue/_util/dashboard.twig',
-            [],
-            View::TEMPLATE_MODE_CP
-        );
+        $id = \Craft::$app->request->getParam('id');
+
+        if( $id === null ) {
+            return Craft::$app->view->renderTemplate(
+                'multiple-queue/dashboard.twig',
+                [],
+                View::TEMPLATE_MODE_CP
+            );
+        }
+        else {
+            return Craft::$app->view->renderTemplate(
+                'multiple-queue/detail.twig',
+                ['id'=>$id],
+                View::TEMPLATE_MODE_CP
+            );            
+        }
     }
 }

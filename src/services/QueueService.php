@@ -20,6 +20,69 @@ class QueueService extends Component {
         return $queues;
     }
 
+    public function release($id): bool {
+        $queue = $this->getQueueByJobId($id);
+
+        if( $queue !== null ) {
+            $queue->release($id);  
+            return true;     
+        }
+
+        return false;
+    }
+
+    public function releaseAll($queue_id): bool {
+        $queue = $this->getQueue($queue_id);
+
+        if( $queue !== null ) {
+            $queue->releaseAll();  
+            return true;     
+        }
+
+        return false;
+
+    }
+
+    public function retry($id): bool {
+        $queue = $this->getQueueByJobId($id);
+
+        if( $queue !== null ) {
+            $queue->retry($id);  
+            return true;     
+        }
+
+        return false;
+    }
+
+    public function retryAll($queue_id): bool {
+        $queue = $this->getQueue($queue_id);
+
+        if( $queue !== null ) {
+            $queue->retryAll();  
+            return true;     
+        }
+
+        return false;
+
+    }
+
+    public function getQueueByJobId($id): ?\craft\queue\Queue {
+        $queues = $this->getQueues();
+
+        foreach($queues as $queue) {
+            try {
+                $queue->getJobDetails($id);
+
+                return $queue;
+            }
+            catch(\Exception $e) {
+                // do nothing, next queue
+            }
+        }
+
+        return null;
+    }
+
     public function getJob($id): ?array {
         $queues = $this->getQueues();
 
@@ -36,4 +99,16 @@ class QueueService extends Component {
 
         return null;
     }
+
+    public function getQueue($id): ?\craft\queue\Queue {
+        $queues = $this->getQueues();
+
+        foreach($queues as $queue) {
+            if( $queue->channel == $id ) {
+                return $queue;
+            }
+        }
+
+        return null;
+    }    
 }
