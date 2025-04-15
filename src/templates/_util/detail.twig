@@ -1,22 +1,24 @@
-{% set jobid = craft.app.request.getParam('id') %}
-
-{% if jobid is empty %}
-    {% redirect('/actions/multiple-queue/admin/') %}
+{% if id is empty %}
+    {% redirect('/admin/utilities/multiple-queue') %}
 {% endif %}
 
-{% set job = craft.mqueues.getJob(jobid) %}
+{% set job = craft.mqueues.getJob(id) %}
 
 {% if job is empty %}
-    {% redirect('/actions/multiple-queue/admin/') %}
+    {% redirect('/admin/utilities/multiple-queue') %}
 {% endif %}
-
-Class: {{ job.class }}<br>
-Delay: {{ job.delay }}<br>
-Status: {{ job.status }}<br>
-Progress: {{ job.progress }}<br>
-Progress Label: {{ job.progressLabel }}<br>
-Description: {{ job.description }}<br>
-Job: {{ job.job }}<br>
-TTR: {{ job.ttr }}<br>
-Priority: {{ job.Priority }}<br>
-{# Pushed at: {{ job.pushedAt }}<br> #}
+<p><a href="/admin/utilities/multiple-queue">&lt;- Back</a></p>
+<h1>{{ job.description }}</h1>
+<div><a href="/actions/multiple-queue/admin/release?job_id={{ id }}">[Release]</a>
+                {% if job.error is defined %}
+                <a href="/actions/multiple-queue/admin/retry?job_id={{ id }}">[Retry]</a>
+                {% endif %}
+</div>
+<table width="100%">
+    <tr><td>ID</td><td>{{ id }}</td></tr>
+    {% for key, val in job %}
+        {% if key != 'job' and key != 'progressLabel' and key != 'description' %}
+        <tr><td>{{ key|title }}</td><td>{{ val }}</td></tr>
+        {% endif %}
+    {% endfor %}
+</table>

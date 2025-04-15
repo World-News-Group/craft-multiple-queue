@@ -1,18 +1,21 @@
 {% set components = craft.mqueues.queues %}
 
-{% for component in components %}
-    <h1>Queue {{ component.channel }}</h1>
+{% for id, component in components %}
+    <h1>Queue "{{ component.channel }}"</h1>
+    <p><a href="/actions/multiple-queue/admin/release-all?queue_id={{ component.channel }}">[Release All]</a>&nbsp;
+    <a href="/actions/multiple-queue/admin/retry-all?queue_id={{ component.channel }}">[Retry All]</a></p>
+
     <table style="width: 100%">
         <tr><th>Description</th><th>Status</th><th>Progress</th><th>&nbsp;</th></tr>
     {% for job in component.getJobInfo()|slice(0, 10) %}
         <tr>
-            <td><a href="/actions/multiple-queue/admin/detail?id={{ job.id }}">{{ job.description }}</a></td>
+            <td><a href="/admin/utilities/multiple-queue?id={{ job.id }}">{{ job.description }}</a></td>
             <td>{{ (job.error is not empty?'Failed':(job.status == 1?'Waiting':(job.status == 2?'Reserved':'Done'))) }}</td>
-            <td>{% if job.error is not empty %}{{ job.error}}{% else %}{{ job.progress }}%{% endif %}</td>
+            <td>{{ job.progress }}%</td>
             <td>
-                <a href="/actions/multiple-queue/admin/release?id={{ job.id }}">[Release]</a>
+                <a href="/actions/multiple-queue/admin/release?job_id={{ job.id }}">[Release]</a>
                 {% if job.error is not empty %}
-                <a href="/actions/multiple-queue/admin/release?id={{ job.id }}">[Retry]</a>
+                <a href="/actions/multiple-queue/admin/retry?job_id={{ job.id }}">[Retry]</a>
                 {% endif %}
             </td>
         </tr>
